@@ -130,7 +130,7 @@ dmypy.json
 
 # private key
 backend/private.py
-a
+frontend\node_modules
 # zd
 .idea
-
+.vscode

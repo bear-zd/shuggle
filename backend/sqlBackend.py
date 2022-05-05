@@ -4,7 +4,7 @@ from private import DATABASE_CONFIG
 import requests
 
 
-class mysqlConnect(object):
+class pgsqlConnect(object):
     def __init__(self, connectConfig=DATABASE_CONFIG):
         try:
             self.connectPool = pool.SimpleConnectionPool(2, 10, **DATABASE_CONFIG, keepalives=1,
