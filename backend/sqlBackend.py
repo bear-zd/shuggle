@@ -49,3 +49,13 @@ class pgsqlConnect(object):
 
     def __del__(self):
         self.connectPool.closeall()
+
+def login(email):
+    SqlConn = pgsqlConnect()
+    sql = "SELECT \"password\" from \"user\" where email = '{}';".format(email)
+    _, res = SqlConn.select(sql)
+    return res[0][0]
+
+
+if __name__ == '__main__':
+    login('a827569457@163.com')
