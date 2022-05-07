@@ -52,10 +52,11 @@ class pgsqlConnect(object):
 
 def login(email):
     SqlConn = pgsqlConnect()
-    sql = "SELECT \"password\" from \"user\" where email = '{}';".format(email)
+    sql = "SELECT \"password\",\"user_id\",\"email\" from \"user\" where email = '{}';".format(email)
     _, res = SqlConn.select(sql)
-    return res[0][0]
+    return res
 
-
+"""
 if __name__ == '__main__':
-    login('a827569457@163.com')
+    print(login('a827569457@163.com'))
+"""

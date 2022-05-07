@@ -8,14 +8,14 @@ class Config(object):
 
 app.config.from_object(Config)
 
-@app.route('/user/login', method=['GET', 'POST'])
+@app.route('/login', method=['GET', 'POST'])
 def user_login():
     data = eval(request.data.decode())
     email = data.get('email')
     password = data.get('password')
-    old_password, token = sqlBackend.login(email)
-    if password == old_password:
-        data = {"code": 20000, 'data': {"token": token}}
+    user_password, userid, email = sqlBackend.login(email)[0]
+    if password == user_password:
+        data = {"code": 20000, 'data': {"userid": userid, "email":email}}
     else:
         data = {"code": 20001, 'msg': '密码错误'}
     return jsonify(data)
@@ -23,3 +23,6 @@ def user_login():
 @app.route()
 def test():
     pass
+
+if __name__ == '__main__':
+   app.run(host = '0.0.0.0', port = 11090)
