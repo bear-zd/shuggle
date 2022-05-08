@@ -29,7 +29,7 @@
 <script>
 
 import {ElMessage} from 'element-plus'
-import router from "../router/index.js"
+// import router from "../router/index.js"
 import axios from "axios";
 
 export default {
