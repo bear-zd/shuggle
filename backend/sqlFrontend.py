@@ -12,14 +12,14 @@ class Config(object):
 
 app.config.from_object(Config)
 
-@app.route('/', methods=['GET', 'POST'])
+
 @app.route('/login', methods=['GET', 'POST'])
 def user_login():
     # data = eval(request.data.decode())
     data = request.form
     email = data.get('email')
     password = data.get('password')
-    user_password, userid, email = sqlBackend.login(email)[0]
+    user_password, userid, email = sqlBackend.Login(email)[0]
     if password == user_password:
         data = {"code": 20000, 'data': {"userid": userid, "email": email}}
     else:

@@ -50,11 +50,17 @@ class pgsqlConnect(object):
     def __del__(self):
         self.connectPool.closeall()
 
-def login(email):
+'''
+这里建议函数主要返回值，处理交给sqlFrontend.py
+'''
+def Login(email):
     SqlConn = pgsqlConnect()
     sql = "SELECT \"password\",\"user_id\",\"email\" from \"user\" where email = '{}';".format(email)
     _, res = SqlConn.select(sql)
     return res
+
+def LaunchTopic():
+    pass
 
 """
 if __name__ == '__main__':
