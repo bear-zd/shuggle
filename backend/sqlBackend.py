@@ -50,17 +50,29 @@ class pgsqlConnect(object):
     def __del__(self):
         self.connectPool.closeall()
 
+
 '''
 这里建议函数主要返回值，处理交给sqlFrontend.py
 '''
+
+
 def Login(email):
     SqlConn = pgsqlConnect()
     sql = "SELECT \"password\",\"user_id\",\"email\" from \"user\" where email = '{}';".format(email)
     _, res = SqlConn.select(sql)
     return res
 
-def LaunchTopic():
-    pass
+
+def LaunchTopic(Tsid, Tuid, Ttopic, Tcontents):
+    SqlConn = pgsqlConnect()
+    Tid = "SELECT \"availabel_topic_id\" FROM available;"
+    _, res = SqlConn.select(Tid)
+    _, res = SqlConn.query(sql)
+
+
+    sql = "INSERT INTO \"BBStopic\" (\"Tid\", \"Tsid\", \"Tuid\", \"Ttopic\",\"Tcontents\") " \
+          "values ({},{},{},{},{}).format(Tid, Tsid, Tuid, Ttopic, Tcontendts)"
+    _, res = SqlConn.query(sql)
 
 """
 if __name__ == '__main__':
