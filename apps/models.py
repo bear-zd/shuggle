@@ -5,6 +5,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask_login import UserMixin, AnonymousUserMixin
 from flask import current_app
 from .tools.other_tool import HtmlToText
+from config import DATABASE
 
 from app import db, login_manager
 
@@ -149,7 +150,10 @@ class Comment(db.Model):
 
     comment_id = db.Column(db.Integer, primary_key=True)
     comment_text = db.Column(db.Text)
-    comment_date = db.Column(db.DateTime)
+    if DATABASE == 'gaussdb':
+        comment_date = db.Column(db.String(255, 'utf8_general_ci'))
+    else :
+        comment_date = db.Column(db.DateTime)
     article_id = db.Column(db.String(20), nullable=False)
     comment_name = db.Column(db.String(30))
     comment_support = db.Column(db.Integer, server_default=db.FetchedValue())

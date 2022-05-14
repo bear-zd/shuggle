@@ -13,7 +13,7 @@ import requests
 
 def getnowtime(type='cn'):
     if type == '':
-        return str(datetime.datetime.now().strftime('%y%m%d%H%M'))
+        return datetime.datetime.now().strftime('%y%m%d%H%M')
     elif type == 'cn':
         return str(datetime.datetime.now().strftime('%Y年%m月%d日 %H:%M'))
     #elif type == '/':

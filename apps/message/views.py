@@ -49,7 +49,11 @@ def chat_put():
         other = request.form["OTHER"]
         print(other)  # 获取前台传递的更多请求
         if id != '':  # 若请求为more则加载更多，否则为正常刷新
-            newmessage = Message(send_type=0, send_id=current_user.uid, receive_id=int(other), send_time=getnowtime(),
+            try:
+                newmessage_id = max(db.session.query(Message.mess_id).all())[0] + 1
+            except ValueError:
+                newmessage_id = 0
+            newmessage = Message(mess_id=newmessage_id,send_type=0, send_id=current_user.uid, receive_id=int(other), send_time=getnowtime(),
                                  mess_content=id)  # 构造发送实例
             db.session.add(newmessage)  # 写入数据库
             db.session.commit()
@@ -109,7 +113,11 @@ def message_list(send_type):
 
 
 def new_message(send_type, send_id, receive_id, mess_content):
-    newmessage = Message(send_type=send_type, send_id=send_id, receive_id=receive_id,
+    try:
+        newmessage_id = max(db.session.query(Message.mess_id).all())[0] + 1
+    except ValueError:
+        newmessage_id = 0
+    newmessage = Message(mess_id = newmessage_id,send_type=send_type, send_id=send_id, receive_id=receive_id,
                          mess_content=HtmlToText(mess_content),
                          send_time=getnowtime())
     db.session.add(newmessage)

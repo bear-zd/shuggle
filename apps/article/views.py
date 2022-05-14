@@ -11,6 +11,8 @@ from .forms import ArticleForm
 from ..tools.other_tool import getnowtime, re_filename, HtmlToText, Base64_PNG, get_new, getTopNews
 from ..message.views import new_message, sum_message
 
+from config import DATABASE
+
 
 @article.route('/add_article/', methods=['GET', 'POST'])
 @login_required
@@ -22,7 +24,8 @@ def add_article():
         article_title = articleForm.article_title.data
         article_type = articleForm.article_type.data
         article_summary = articleForm.article_summary.data
-        article = Article(article_title=article_title, article_summary=article_summary,
+        article_id = max(db.session.query(Article.article_id).all())[0] + 1
+        article = Article(article_id=article_id, article_title=article_title, article_summary=article_summary,
                           article_date=getnowtime('-'), article_type=article_type,
                           user_id=current_user.uid)  # 根据表单内容构造对象
         db.session.add(article)  # 将构造的对象存入数据库
@@ -36,8 +39,6 @@ def add_article():
         return render_template('baseform.html', form=articleForm, flag='article')  # 向前台传递构造的表单样式
 
 
-
-
 @article.route('/get_article/<article_id>', methods=['GET', 'POST'])
 def get_article(article_id):
     if current_user.is_authenticated:
@@ -49,8 +50,7 @@ def get_article(article_id):
     comments = Comment().query.filter_by(article_id=article_id).all()  # 根据帖子id获取改帖子下所有的恢复信息
     account = User().query.filter_by(uid=article.user_id).first().account
     return render_template(
-        'article.html', article=article, comments=comments,account=account)  # 向前台传递数据
-
+        'article.html', article=article, comments=comments, account=account)  # 向前台传递数据
 
 
 @article.route('/add_comment/<article_id>', methods=["POST"])
@@ -60,9 +60,18 @@ def add_comment(article_id):
     if request.method == 'POST':
         commentary = request.form.get("commentary")
         commentary = markdown.markdown(commentary, ['extra', 'codehilite'])
+        if DATABASE == 'gaussdb':
+            comment_date = getnowtime('-')
+        else:
+            comment_date = getnowtime('')
+        try:
+            comment_id = max(db.session.query(Comment.comment_id).all())[0] + 1
+        except ValueError:
+            comment_id = 0
         comment = Comment(
+            comment_id=comment_id,
             comment_text=commentary,
-            comment_date=getnowtime(''),
+            comment_date=comment_date,
             comment_name='  ',
             user_id=current_user.uid,
             article_id=article_id)
@@ -239,13 +248,15 @@ def ckupload():
     f.save(upload_path)
     return render_template('base/tool.html')
 
+
 @article.route('/news/<link>', methods=['GET', 'POST'])
 def news(link):
-    return render_template('news.html',summary=get_new(link))
+    return render_template('news.html', summary=get_new(link))
+
 
 @article.route('/more_news/', methods=['GET', 'POST'])
 def more_news():
-    return render_template('news_list.html',news=getTopNews(0))
+    return render_template('news_list.html', news=getTopNews(0))
 
 
 @article.route('/upload/', methods=['POST', 'GET'])

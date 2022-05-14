@@ -401,7 +401,11 @@ def add_table_count(tablename):
 @login_required
 def follow(user_id):
     sum_message(current_user.uid)
-    follow = Follow(send_id=current_user.uid, receive_id=user_id, foolow_time=getnowtime())
+    try:
+        follow_id = max(db.session.query(Follow.follow_id).all())[0] + 1
+    except ValueError:
+        follow_id = 0
+    follow = Follow(follow_id = follow_id, send_id=current_user.uid, receive_id=user_id, foolow_time=getnowtime())
     db.session.add(follow)
     db.session.commit()
     sum_following(current_user.uid)
