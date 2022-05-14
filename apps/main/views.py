@@ -444,6 +444,7 @@ def sum_following(uid):
 
 def add_login_log(uid):
     ip = request.remote_addr
-    newlog = LoginLog(user_id=uid, login_ip=ip, login_time=getnowtime())
+    loginid = max(db.session.query(LoginLog.login_id).all())[0]+1
+    newlog = LoginLog(login_id=loginid, user_id=uid, login_ip=ip, login_time=getnowtime())
     db.session.add(newlog)
     db.session.commit()

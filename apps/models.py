@@ -10,11 +10,13 @@ from app import db, login_manager
 
 db = SQLAlchemy()
 
+
 class AnonymousUser(AnonymousUserMixin):
     # confirmed = False
     @property
     def confirmed(self):
         return False
+
 
 class Count(db.Model):
     __tablename__ = 'count'
@@ -86,7 +88,6 @@ class UserLogin(db.Model):
     lastlogin = db.Column(db.String(255, 'utf8_general_ci'), info='上次登录时间')
     pay_password_hash = db.Column(db.String(255, 'utf8_general_ci'), info='支付密码')
 
-
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')
@@ -136,12 +137,12 @@ class Article(db.Model):
     article_date = db.Column(db.String(255, 'utf8_general_ci'))
     article_url = db.Column(db.String(255, 'utf8_general_ci'))
     article_type = db.Column(db.String(20, 'utf8_general_ci'))
-    #user_id = db.Column(db.String(20, 'utf8_general_ci'), nullable=False)
+    # user_id = db.Column(db.String(20, 'utf8_general_ci'), nullable=False)
     user_id = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
 
+    def text_summ(self, num=0):
+        return HtmlToText(self.article_summary, num)
 
-    def text_summ(self,num=0):
-        return HtmlToText(self.article_summary,num)
 
 class Comment(db.Model):
     __tablename__ = 'comment'
@@ -164,6 +165,7 @@ class ArticleSc(db.Model):
     user_id = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
     sc_time = db.Column(db.String(255, 'utf8_general_ci'), nullable=False, server_default=db.FetchedValue())
 
+
 class Follow(db.Model):
     __tablename__ = 'follow'
 
@@ -173,15 +175,13 @@ class Follow(db.Model):
     foolow_time = db.Column(db.String(255, 'utf8_general_ci'), nullable=False, server_default=db.FetchedValue())
 
 
-
 class LoginLog(db.Model):
     __tablename__ = 'login_log'
 
-    login_id = db.Column(db.Integer, primary_key=True)
+    login_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer)
     login_ip = db.Column(db.String(255))
     login_time = db.Column(db.String(255))
-
 
 
 class Message(db.Model):
