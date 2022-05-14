@@ -1,13 +1,11 @@
-
 import sqlalchemy
 from flask import g, redirect, render_template, url_for, flash, current_app, request
 from flask_login import login_required, current_user, login_user, logout_user
 
-
 from . import main, news
 from ..models import User, db, Count, UserLogin, Verify, Article, Message, Follow, ArticleSc, LoginLog
 from .forms import LoginForm, MyselfForm, PassForm, EmailForm, YzmForm, ForgetPassForm, UserCat
-from ..tools.other_tool import getnowtime, get_rand, send_email, Base64_PNG,getTopNews
+from ..tools.other_tool import getnowtime, get_rand, send_email, Base64_PNG, getTopNews
 from ..message.views import new_message, sum_message
 
 
@@ -45,7 +43,7 @@ def index():
     users = User.query.order_by(User.uid.desc()).all()  # 从数据库取出用户表（加载头像）
     if current_user.is_authenticated:
         sum_message(current_user.uid)
-    return render_template('all_articles.html', tip='主页', articles=articles, users=users,news=news, flag=0)  # 向前台传递数据
+    return render_template('all_articles.html', tip='主页', articles=articles, users=users, news=news, flag=0)  # 向前台传递数据
 
 
 @main.route('/login_in/', methods=['POST', 'GET'])
@@ -106,8 +104,12 @@ def email_up():
         else:
             emails = email
             yzm = get_rand(6)
+            try:
+                v_id = max(db.session.query(Verify.id).all())[0] + 1
+            except ValueError:
+                v_id = 0
             if send_email(yzm, emails, 0):
-                verify = Verify(email=emails, yzm=yzm, sendtime=getnowtime(''))
+                verify = Verify(id=v_id, email=emails, yzm=yzm, sendtime=getnowtime(''))
                 db.session.add(verify)
                 db.session.commit()
             return redirect(url_for('main.verify_yzm', emails=email))
@@ -176,7 +178,7 @@ def user_more(user_id):
     if current_user.is_authenticated:
         sum_message(current_user.uid)
         if int(user_id) == current_user.uid:
-            return render_template('user.html', user=current_user, flag=-1,form=userform)
+            return render_template('user.html', user=current_user, flag=-1, form=userform)
         else:
             user = User().query.filter_by(uid=user_id).first()
             myfollow = Follow().query.filter(Follow.send_id == current_user.uid, Follow.receive_id == user_id).all()
@@ -405,7 +407,7 @@ def follow(user_id):
         follow_id = max(db.session.query(Follow.follow_id).all())[0] + 1
     except ValueError:
         follow_id = 0
-    follow = Follow(follow_id = follow_id, send_id=current_user.uid, receive_id=user_id, foolow_time=getnowtime())
+    follow = Follow(follow_id=follow_id, send_id=current_user.uid, receive_id=user_id, foolow_time=getnowtime())
     db.session.add(follow)
     db.session.commit()
     sum_following(current_user.uid)
@@ -428,10 +430,11 @@ def unfollow(follow_id):
     sum_following(myfollow.receive_id)
     return redirect(url_for('main.user_more', user_id=myfollow.receive_id))
 
+
 @main.route('/all_login_log/')
 @login_required
 def all_login_log():
-    login_logs=LoginLog().query.filter_by(user_id=current_user.uid).all()
+    login_logs = LoginLog().query.filter_by(user_id=current_user.uid).all()
     return render_template('login_list.html', login_logs=login_logs)
 
 
@@ -448,7 +451,7 @@ def sum_following(uid):
 
 def add_login_log(uid):
     ip = request.remote_addr
-    loginid = max(db.session.query(LoginLog.login_id).all())[0]+1
+    loginid = max(db.session.query(LoginLog.login_id).all())[0] + 1
     newlog = LoginLog(login_id=loginid, user_id=uid, login_ip=ip, login_time=getnowtime())
     db.session.add(newlog)
     db.session.commit()
