@@ -136,13 +136,17 @@ def getTopNews(num=8):
     headers = {
         'User-Agent': 'User-Agent:Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50'}
     r = requests.get(
-        'https://quark.sm.cn/s?from=kkframenew&uc_param_str=dnntnwvepffrgibijbprsvpidsdichei&q=%E6%96%B0%E9%97%BB%E7%83%AD%E7%82%B9',
+        'https://paperswithcode.com',
         headers=headers)
     r.encoding = r.apparent_encoding
     tree = etree.HTML(r.text)
-    all_title = tree.xpath('//*[@class="c-title-s news-top-list-item-title"]/text()')
-    all_link = tree.xpath('//*[@class="news-top-list-item c-padding-top-l c-border-bottom c-padding-bottom-l"]/@href')
-    all_watch = tree.xpath('//*[@class="news-top-list-item-number c-font-s c-font-dark"]/text()')
+    all_title = tree.xpath('//*[@class="col-lg-9 item-content"]/h1/a/text()')
+    all_link = tree.xpath('//*[@class="col-lg-9 item-content"]/h1/a/@href')
+    all_watch = tree.xpath('//*[@class="badge badge-secondary"]/text()')
+    # print(all_title,all_link,all_watch)
+    paper_num = len(all_link)
+    for i in range(paper_num):
+        all_link[i] = "https://paperswithcode.com"+all_link[i]
 
     class news:
         def __init__(self, index, title, link, watch):
