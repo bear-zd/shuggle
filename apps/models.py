@@ -138,7 +138,6 @@ class Article(db.Model):
     article_date = db.Column(db.String(255, 'utf8_general_ci'))
     article_url = db.Column(db.String(255, 'utf8_general_ci'))
     article_type = db.Column(db.String(20, 'utf8_general_ci'))
-    # user_id = db.Column(db.String(20, 'utf8_general_ci'), nullable=False)
     user_id = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
 
     def text_summ(self, num=0):

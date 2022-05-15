@@ -38,7 +38,8 @@ def create_app():
     app.register_blueprint(article_blueprint)
     from apps.message import message as message_blueprint
     app.register_blueprint(message_blueprint)
-    # CSRFProtect(app)
+    from apps.competition import competition as competition_blueprint
+    app.register_blueprint(competition_blueprint)
     return app
 
 
