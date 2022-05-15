@@ -20,7 +20,7 @@ class RenderForm(FlaskForm):
 
 class ArticleForm(RenderForm):
     article_url = StringField(label='',
-                              render_kw={"placeholder": "0-20个字符", "id": "tx_input", "class": "invisible", "type": "text",
+                              render_kw={"placeholder": "0-20个字符", "id": "tx_input_2", "class": "invisible", "type": "text",
                                          "readonly": "readonly"})
     article_title = StringField(label='标题', validators=[Length(min=3, max=15, message="必须介于3-15个字符")],
                                 render_kw={"placeholder": "3-15个字符"})

@@ -124,7 +124,7 @@ class TxForm(RenderForm):
 
 class MyselfForm(RenderForm):
     tx_link = StringField(label='',
-                          render_kw={"placeholder": "0-20个字符", "id": "tx_input", "class": "invisible", "type": "text",
+                          render_kw={"placeholder": "0-20个字符", "id": "tx_input_2", "class": "invisible", "type": "text",
                                      "readonly": "readonly"})
     birthday = StringField(label='', validators=[Length(min=0, max=20, message="必须介于0-20个字符")],
                            render_kw={"placeholder": "0-20个字符", "id": "date_input","class": "visible", "onclick": "newdate()",
@@ -146,7 +146,7 @@ class MyselfForm(RenderForm):
 
 class UserCat(RenderForm):
     tx_link = StringField(label='',
-                          render_kw={"placeholder": "0-20个字符", "id": "tx_input", "class": "invisible", "type": "text",
+                          render_kw={"placeholder": "0-20个字符", "id": "tx_input_2", "class": "invisible", "type": "text",
                                      "readonly": "readonly"})
     account = StringField(label='用户名', validators=[Length(min=0, max=20, message="必须介于0-20个字符")],
                            render_kw={"placeholder": "0-20个字符", "id": "date_input", "onclick": "newdate()",
