@@ -154,8 +154,9 @@ class UserCat(RenderForm):
     birthday = StringField(label='', validators=[Length(min=0, max=20, message="必须介于0-20个字符")],
                            render_kw={"placeholder": "0-20个字符", "id": "date_input", "onclick": "newdate()",
                                       "type": "text", "readonly": "readonly"})
-    sex = RadioField('性别', choices=[('男', '男'), ('女', '女')], validators=[DataRequired("性别必填！")],render_kw={"type": "text",
-                                     "readonly": "readonly"})
+    sex = StringField(label='性别', validators=[Length(min=0, max=2, message="男/女")],
+                          render_kw={"placeholder": "不明", "id": "date_input", "onclick": "newdate()",
+                                     "type": "text", "readonly": "readonly"})
     now_address = StringField(label='现居地', validators=[Length(min=0, max=50, message="必须介于0-10个字符")],
                               render_kw={"placeholder": "0-50个字符", "type": "text",
                                      "readonly": "readonly"})
@@ -174,7 +175,7 @@ class UserCat(RenderForm):
     readme = StringField(label='个人介绍', validators=[Length(min=0, max=50, message="必须介于0-50个字符")],
                          render_kw={"placeholder": "0-50个字符", "type": "text",
                                      "readonly": "readonly"})
-    following_cnt = StringField(label='关注着', validators=[Length(min=0, max=50, message="必须介于0-50个字符")],
+    following_cnt = StringField(label='关注者', validators=[Length(min=0, max=50, message="必须介于0-50个字符")],
                          render_kw={"placeholder": "0-50个字符", "type": "text",
                                      "readonly": "readonly"})
     follower_cnt = StringField(label='粉丝数', validators=[Length(min=0, max=50, message="必须介于0-50个字符")],
