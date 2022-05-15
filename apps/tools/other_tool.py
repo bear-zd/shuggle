@@ -32,13 +32,13 @@ def send_email(yzm, user_email, test=0):
     stmp = smtplib.SMTP_SSL(smtp_server, smtp_port)
     stmp.login(from_addr, qqCode)
     message = MIMEMultipart()
-    message['From'] = Header("阿拉宁波", 'utf-8')
+    message['From'] = Header("SHUGGLE", 'utf-8')
     message['To'] = Header(" ", 'utf-8')
-    subject = '阿拉宁波-注册验证码'
+    subject = 'SHUGGLE-注册验证码'
     message['Subject'] = Header(subject, 'utf-8')
     message.attach(MIMEText(user_email +
-                            '您好：\n    感谢您注册阿拉宁波。\n\n    这是一封注册激活邮件，请将下列6位数字激活码输入到激活页面。\n\n激活码：'
-                            + yzm + '\n\n    上述6位数字激活码的有效期为1小时，如果你收到多封邮件，请以最后一封邮件中的激活码为准。\n\n如果你没有注册过阿拉宁波，你可以忽略这封邮件。',
+                            '您好：\n    感谢您注册SHUGGLE。\n\n    这是一封注册激活邮件，请将下列6位数字激活码输入到激活页面。\n\n激活码：'
+                            + yzm + '\n\n    上述6位数字激活码的有效期为1小时，如果你收到多封邮件，请以最后一封邮件中的激活码为准。\n\n如果你没有注册过SHUGGLE，你可以忽略这封邮件。',
                             'plain', 'utf-8'))
     try:
         stmp.sendmail(from_addr, user_email, message.as_string())
