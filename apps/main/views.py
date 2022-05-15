@@ -3,7 +3,7 @@ from flask import g, redirect, render_template, url_for, flash, current_app, req
 from flask_login import login_required, current_user, login_user, logout_user
 
 from . import main, news
-from ..models import User, db, Count, UserLogin, Verify, Article, Message, Follow, ArticleSc, LoginLog
+from ..models import User, db, Count, UserLogin, Verify, Article, Message, Follow, ArticleSc, LoginLog, Competition
 from .forms import LoginForm, MyselfForm, PassForm, EmailForm, YzmForm, ForgetPassForm, UserCat
 from ..tools.other_tool import getnowtime, get_rand, send_email, Base64_PNG, getTopNews
 from ..message.views import new_message, sum_message

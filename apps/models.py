@@ -198,6 +198,26 @@ class Message(db.Model):
     mess_content = db.Column(db.String(255))
     read_state = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue(), info='1未读，0已读，-1已删')
 
+class Competition(db.Model):
+    __tablename__ = 'competition'
+
+    competition_id = db.Column(db.Integer, primary_key=True)
+    competition_title = db.Column(db.String(100), nullable=False)
+    competition_summary = db.Column(db.String(3000, 'utf8_general_ci'), nullable=False)
+    competition_read_cnt = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
+    competition_pl = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
+    competition_sc = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
+    competition_date = db.Column(db.String(255, 'utf8_general_ci'))
+    competition_url = db.Column(db.String(255, 'utf8_general_ci'))
+    competition_type = db.Column(db.String(20, 'utf8_general_ci'))
+    user_id = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
+    dataset_url = db.Column(db.String(255, 'utf8_general_ci'))
+    checker_url = db.Column(db.String(255, 'utf8_general_ci'))
+    gt_url = db.Column(db.String(255, 'utf8_general_ci'))
+
+    def text_summ(self, num=0):
+        return HtmlToText(self.competition_summary, num)
+
 
 @login_manager.user_loader
 def load_user(user_id):
