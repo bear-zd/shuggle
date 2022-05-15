@@ -147,6 +147,8 @@ def getTopNews(num=8):
     paper_num = len(all_link)
     for i in range(paper_num):
         all_link[i] = "https://paperswithcode.com"+all_link[i]
+    for i in range(paper_num):
+        all_title[i] = " "+all_title[i]+" (Star:%s)"%str(all_watch[i])
 
     class news:
         def __init__(self, index, title, link, watch):
