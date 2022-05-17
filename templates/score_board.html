@@ -12,13 +12,12 @@
 			<th><h1>用户id</h1></th>
             <th><h1>用户名</h1></th>
 			<th><h1>用户得分</h1></th>
-{#			<th><h1>Average</h1></th>#}
 		</tr>
 	</thead>
 	<tbody>
         {% for i in range(num) %}
             <tr>
-                <td>{{i+1}}</td>
+                <td>{{index_list[i]}}</td>
                 <td>{{score[i].user_id}}</td>
                 <td>{{name[i]}}</td>
                 <td>{{score[i].score}}</td>

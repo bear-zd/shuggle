@@ -75,6 +75,11 @@ def upload_score():
     checker = db.session.query(Competition.checker_url).filter_by(competition_id=output['competition_id']).first()
 
 
+def get_index(score):
+    ls = [1]*len(score)
+    for i in range(1,len(score)):
+        ls[i] = ls[i-1]+1 if score[i]!=score[i-1] else ls[i-1]
+    return ls
 
 
 @competition.route('/get_competition/scoreboard/<competition_id>')
@@ -84,5 +89,7 @@ def score_board(competition_id):
     tot = list(sorted(tot,key=lambda x : x.score,reverse=True))
     competiton_name = Competition.query.filter_by(competition_id=competition_id).first().competition_title
     name_list = [User.query.filter_by(uid=i.user_id).first().account for i in tot]
+    index_list = get_index(tot)
     print(name_list)
-    return render_template('score_board.html',score=tot,competition_name=competiton_name,name=name_list,num=len(tot))
+    print(index_list)
+    return render_template('score_board.html',score=tot,competition_name=competiton_name,name=name_list,num=len(tot),index_list=index_list)
