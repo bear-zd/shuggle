@@ -45,11 +45,15 @@ def show_competitions():
     return render_template('all_competitions.html', tip='主页', competitions=competitions, users=users, news=news, flag=0)  # 向前台传递数据
 
 
-@competition.route('/get_competition/<competition_id>', methods=['GET', 'POST'])
+@competition.route('/get_competition/<competition_id>', methods=['GET'])
+@login_required
 def get_competition(competition_id):
 
     if current_user.is_authenticated:
         sum_message(current_user.uid)
+
+    # print(competition_id)
+    # print(current_user.uid)
 
     competition = Competition().query.filter_by(competition_id=competition_id).first()  # 根据帖子id从数据库获取帖子实例
     competition.competition_read_cnt = competition.competition_read_cnt + 1  # 帖子阅读量+1
@@ -58,8 +62,7 @@ def get_competition(competition_id):
 
     account = User().query.filter_by(uid=competition.user_id).first().account
 
-    return render_template(
-        'competition.html', competition=competition, account=account)  # 后续可能需要填排名
+    return render_template('competition.html', competition=competition, account=account)  # 后续可能需要填排名
 
 
 @competition.route('/competition_upload', methods=['POST'])
