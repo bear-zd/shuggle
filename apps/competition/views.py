@@ -19,7 +19,7 @@ from ..message.views import new_message, sum_message
 from config import DATABASE
 
 @competition.route('/', methods=['GET', 'POST'])
-def get_competition():
+def show_competitions():
     all_cnt = Competition.query.count()  # 获取所有帖子数量
     if request.method == 'POST':
         id = request.form["DATA"]  # 获取前台传递的更多请求
@@ -41,6 +41,22 @@ def get_competition():
     users = User.query.order_by(User.uid.desc()).all()  # 从数据库取出用户表（加载头像）
     if current_user.is_authenticated:
         sum_message(current_user.uid)
+
     return render_template('all_competitions.html', tip='主页', competitions=competitions, users=users, news=news, flag=0)  # 向前台传递数据
 
 
+@competition.route('/get_competition/<competition_id>', methods=['GET', 'POST'])
+def get_competition(competition_id):
+
+    if current_user.is_authenticated:
+        sum_message(current_user.uid)
+
+    competition = Competition().query.filter_by(competition_id=competition_id).first()  # 根据帖子id从数据库获取帖子实例
+    competition.competition_read_cnt = competition.competition_read_cnt + 1  # 帖子阅读量+1
+    db.session.add(competition)  # 阅读量更改写入数据库
+    db.session.commit()
+
+    account = User().query.filter_by(uid=competition.user_id).first().account
+
+    return render_template(
+        'competition.html', competition=competition, account=account)  # 后续可能需要填排名
