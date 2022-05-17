@@ -62,8 +62,10 @@ def get_competition(competition_id):
         'competition.html', competition=competition, account=account)  # 后续可能需要填排名
 
 
-@competition.route('/competition_upload', methods=['POST'])
-def upload_score():
+@competition.route('/competition_uploader/<competition_id>', methods=['POST'])
+def upload_score(competition_id):
+    print("output")
+    print(current_user.uid,competition_id)
     if current_user.is_authenticated:
         sum_message(current_user.uid)
     user_id = current_user.uid
