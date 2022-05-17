@@ -29,19 +29,19 @@
 
       <figcaption class="figure-caption">{{ competition.competition_summary|safe }}</figcaption><!--帖子正文-->
     </figure>
-    <form role="form" action="/add_comment/{{ competition.competition_id }}" method="post"><!--帖子评论框-->
-      <div class="form-group">
-        <hr>
-      </div>
-      <div class="form-group">
-        <textarea class="form-control" name="commentary" rows="3" placeholder="说点什么吧 "></textarea>
-      </div>
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary btn-lg btn-block">发表评论</button>
-      </div>
-    </form>
-    <br>
-    <br>
+{#    <form role="form" action="/add_comment/{{ competition.competition_id }}" method="post"><!--帖子评论框-->#}
+{#      <div class="form-group">#}
+{#        <hr>#}
+{#      </div>#}
+{#      <div class="form-group">#}
+{#        <textarea class="form-control" name="commentary" rows="3" placeholder="说点什么吧 "></textarea>#}
+{#      </div>#}
+{#      <div class="form-group">#}
+{#        <button type="submit" class="btn btn-primary btn-lg btn-block">发表评论</button>#}
+{#      </div>#}
+{#    </form>#}
+{#    <br>#}
+{#    <br>#}
 
 {#    <div class="list-group">#}
 {#      <div class="alert alert-info" role="alert">#}
