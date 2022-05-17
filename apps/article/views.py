@@ -53,7 +53,7 @@ def get_article(article_id):
         'article.html', article=article, comments=comments, account=account)  # 向前台传递数据
 
 
-@article.route('/add_comment/<article_id>', methods=["POST"])
+@article.route('/add_comment/<article_id>', methods=["POST","GET"])
 @login_required
 def add_comment(article_id):
     sum_message(current_user.uid)
@@ -86,8 +86,10 @@ def add_comment(article_id):
         if current_user.uid != article.user_id:
             new_message(send_type=1, send_id=current_user.uid, receive_id=article.user_id,
                         mess_content=HtmlToText(comment.comment_text))
-    return render_template(
-        'article.html', article=article, comments=comments)
+        return render_template(
+            'article.html', article=article, comments=comments)
+    else:
+        return redirect("/get_article/{}".format(article_id))
 
 
 @article.route('/comment_oppose/<comment_id>')
