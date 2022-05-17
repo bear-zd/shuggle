@@ -73,7 +73,6 @@ def upload_score(competition_id):
         sum_message(current_user.uid)
     user_id = current_user.uid
 
-
     competition = Competition().query.filter_by(competition_id=competition_id).first()  # 根据帖子id从数据库获取帖子实例
     competition.competition_read_cnt = competition.competition_read_cnt + 1  # 帖子阅读量+1
     db.session.add(competition)  # 阅读量更改写入数据库
