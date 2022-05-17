@@ -84,7 +84,7 @@ def get_index(score):
 
 @competition.route('/get_competition/scoreboard/<competition_id>')
 def score_board(competition_id):
-    # print("now:",competition_id)
+    print("now:",competition_id)
     tot = Rank.query.filter_by(competition_id=competition_id).all()
     tot = list(sorted(tot,key=lambda x : x.score,reverse=True))
     competiton_name = Competition.query.filter_by(competition_id=competition_id).first().competition_title
