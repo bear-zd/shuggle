@@ -3,7 +3,7 @@
 </head>
 {#{% block content %}#}
 <h1><span class="blue">&lt;</span>SHUGGLE<span class="blue">&gt;</span> <span class="yellow">{{ competition_name }}</span></h1>
-<h2>享受数据科学的乐趣😎 <a href="https://github.com/pablorgarcia" target="_blank">  来自SHU计算机工程与科学学院</a></h2>
+<h2>享受数据科学的乐趣😎 <a href="https://github.com/pablorgarcia" target="_blank">来自SHU计算机工程与科学学院</a></h2>
 
 <table class="container">
 	<thead>
@@ -17,13 +17,10 @@
 	<tbody>
         {% for i in range(num) %}
             <tr>
-                <td>{{index_list[i]}}</td>
+                <td>{{index_list[i]}} {% if index_list[i] == 1 %}🥇 {% endif %} {% if index_list[i] == 2 %}🥈 {% endif %}{% if index_list[i] == 3 %}🥉 {% endif %}</td>
                 <td>{{score[i].user_id}}</td>
                 <td>{{name[i]}}</td>
                 <td>{{score[i].score}}</td>
-{#                <td>ele.score</td>#}
-{#                  <td>1</td>#}
-{#                  <td>1</td>#}
             </tr>
         {% endfor %}
 		<tr>
@@ -64,3 +61,4 @@
 {#		</tr>#}
 	</tbody>
 </table>
+
