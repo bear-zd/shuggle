@@ -73,6 +73,16 @@ def upload_score():
     save_name = os.path.join(UPLOAD_FOLDER[1:],uuid_value.hex)
     submission_file.save(save_name+suffix)
     checker = db.session.query(Competition.checker_url).filter_by(competition_id=output['competition_id']).first()
+    with open(save_name+'.py','w+') as file:
+        file.write(checker[0])
+    gt_path = db.session.query(Competition.gt_url).filter_by(competition_id=output['competition_id']).first()[0]
+    score = os.popen('python {} -sub {} -gt {}'.format(save_name+'.py', save_name+suffix, gt_path))
+    score = score.read()
+    os.remove(save_name+suffix)
+    os.remove(save_name+'.py')
+    rank = Rank(user_id=output['user_id'], competition_id=output['competition_id'], score=score)
+    db.session.add(rank)
+    db.session.commit()
 
 
 
