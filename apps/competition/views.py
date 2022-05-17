@@ -67,8 +67,8 @@ def get_competition(competition_id):
 
 @competition.route('/competition_uploader/<competition_id>', methods=['POST'])
 def upload_score(competition_id):
-    print("output")
-    print(current_user.uid,competition_id)
+    # print("output")
+    # print(current_user.uid,competition_id)
     if current_user.is_authenticated:
         sum_message(current_user.uid)
     user_id = current_user.uid
@@ -82,3 +82,12 @@ def upload_score(competition_id):
 
     return render_template(
         'competition.html', competition=competition, account=account)  # 后续可能需要填排名
+
+
+
+@competition.route('/get_competition/scoreboard/<competition_id>')
+def score_board(competition_id):
+    print("now:",competition_id)
+    tot = Rank.query.filter_by(competition_id=competition_id).all()
+    tot = list(sorted(tot,key=lambda x : x.score,reverse=True))
+    return render_template('score_board.html',score=tot)

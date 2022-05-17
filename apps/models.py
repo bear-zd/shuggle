@@ -219,12 +219,14 @@ class Competition(db.Model):
     def text_summ(self, num=0):
         return HtmlToText(self.competition_summary, num)
 
+
 class Rank(db.Model):
     __tablename__ = 'rank'
 
     user_id = db.Column(db.Integer, nullable=False,primary_key=True)
     competition_id = db.Column(db.Integer, nullable=False,primary_key=True)
     score = db.Column(db.DECIMAL, nullable=False)
+
 
 
 @login_manager.user_loader
