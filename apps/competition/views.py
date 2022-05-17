@@ -16,7 +16,7 @@ from ..models import db, Competition, Comment, User, Rank
 from ..tools.other_tool import getnowtime, re_filename, HtmlToText, Base64_PNG, get_new, getTopNews
 from ..message.views import new_message, sum_message
 
-from config import DATABASE
+from config import DATABASE, UPLOAD_FOLDER
 
 @competition.route('/', methods=['GET', 'POST'])
 def show_competitions():
@@ -65,13 +65,14 @@ def get_competition(competition_id):
     return render_template('competition.html', competition=competition, account=account)  # 后续可能需要填排名
 
 
-@competition.route('/competition_uploader/<competition_id>', methods=['POST'])
-def upload_score(competition_id):
-    # print("output")
-    # print(current_user.uid,competition_id)
+
+
+@competition.route('/get_competition/<competition_id>', methods=['GET'])
+@login_required
+def get_competition(competition_id):
+
     if current_user.is_authenticated:
         sum_message(current_user.uid)
-    user_id = current_user.uid
 
     competition = Competition().query.filter_by(competition_id=competition_id).first()  # 根据帖子id从数据库获取帖子实例
     competition.competition_read_cnt = competition.competition_read_cnt + 1  # 帖子阅读量+1
@@ -79,9 +80,21 @@ def upload_score(competition_id):
     db.session.commit()
 
     account = User().query.filter_by(uid=competition.user_id).first().account
+    uid = current_user.uid
 
-    return render_template(
-        'competition.html', competition=competition, account=account)  # 后续可能需要填排名
+    return render_template('competition.html', competition=competition, account=account, uid=uid)  # 后续可能需要填排名
+
+
+@competition.route('/competition_uploader/', methods=['POST'])
+def upload_score():
+    output = request.form
+    submission_file = request.files['file']
+    suffix = secure_filename(submission_file.filename)[-4:]
+    uuid_value = uuid.uuid1()
+    save_name = os.path.join(UPLOAD_FOLDER[1:],uuid_value.hex)
+    submission_file.save(save_name+suffix)
+    checker = db.session.query(Competition.checker_url).filter_by(competition_id=output['competition_id']).first()
+
 
 
 

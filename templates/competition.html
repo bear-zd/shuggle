@@ -1,81 +1,105 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="container" style="padding-top: 90px;">
-    <style>
-        .figure img {
-            max-width: 500px;
-            _width: 500px;
-        }
-    </style>
-      <div class="img_main float-right"
-           style="text-align: center;overflow: hidden;width: 180px;height: 180px;border:0px solid;border-radius:15px;">
-        <img class="blog_img" src="{{ competition.competition_url }}" alt="Card image cap"
-             style="height: 100%;width: auto;"><!--帖子头图-->
-      </div>
-      <h3>{{ competition.competition_title }}</h3><!--帖子标题-->
-      <p>
+    <div class="container" style="padding-top: 90px;">
+        <style>
+            .figure img {
+                max-width: 500px;
+                _width: 500px;
+            }
+        </style>
+        <div class="img_main float-right"
+             style="text-align: center;overflow: hidden;width: 180px;height: 180px;border:0px solid;border-radius:15px;">
+            <img class="blog_img" src="{{ competition.competition_url }}" alt="Card image cap"
+                 style="height: 100%;width: auto;"><!--帖子头图-->
+        </div>
+        <h3>{{ competition.competition_title }}</h3><!--帖子标题-->
+        <p>
           <span><a href="/user_more/{{ competition.user_id }}"><span
                   class="glyphicon glyphicon-user"></span>{{ account }}&nbsp;&nbsp;</a></span><!--楼主消息-->
-        <span class="glyphicon glyphicon-time"></span>{{ competition.competition_date }}&nbsp;&nbsp;<!--帖子发布时间-->
-        <span class="glyphicon glyphicon-eye-open"></span>浏览({{ competition.competition_read_cnt }})&nbsp;&nbsp;<!--帖子浏览量-->
-        <span><a><span
-                class="glyphicon glyphicon-star"></span>喜欢({{ competition.competition_sc }})&nbsp;&nbsp;</a></span><!--帖子点赞-->
-        <span><span
-                class="glyphicon glyphicon-comment"></span>评论({{ competition.competition_pl }})&nbsp;&nbsp;</span><!--帖子评论数-->
-      </p>
-      <hr>
+            <span class="glyphicon glyphicon-time"></span>{{ competition.competition_date }}&nbsp;&nbsp;<!--帖子发布时间-->
+            <span class="glyphicon glyphicon-eye-open"></span>浏览({{ competition.competition_read_cnt }})&nbsp;&nbsp;
+            <!--帖子浏览量-->
+            <span><a><span
+                    class="glyphicon glyphicon-star"></span>喜欢({{ competition.competition_sc }})&nbsp;&nbsp;</a></span>
+            <!--帖子点赞-->
+            <span><span
+                    class="glyphicon glyphicon-comment"></span>评论({{ competition.competition_pl }})&nbsp;&nbsp;</span>
+            <!--帖子评论数-->
+        </p>
+        <hr>
 
-    <figure class="figure">
+        <figure class="figure">
 
-      <figcaption class="figure-caption">{{ competition.competition_summary|safe }}</figcaption><!--帖子正文-->
-    </figure>
-      <a href={{ competition.dataset_url }}>点击下载数据集</a>          <br>
-      <a href={{ competition.example_url }}>点击下载提交样例</a>
-      <form action="http://localhost:5000/competition/competition_uploader/{{competition.competition_id}}" method="POST" enctype="multipart/form-data" onSubmit="return confirm('确认提交？');">>
-        <input id='file' type="file" name="file"  />
+            <figcaption class="figure-caption">{{ competition.competition_summary|safe }}</figcaption><!--帖子正文-->
+        </figure>
+        <a href={{ competition.dataset_url }}>点击下载数据集</a> <br>
+        <a href={{ competition.example_url }}>点击下载提交样例</a>
+        <form action="http://localhost:5000/competition/competition_uploader/"
+              method="POST" enctype="multipart/form-data">
+            <input id='file' type="file" name="file"/>
 
-        <input type="submit" value="提交" />
-    </form>
-{#    <form role="form" action="/add_comment/{{ competition.competition_id }}" method="post"><!--帖子评论框-->#}
-{#      <div class="form-group">#}
-{#        <hr>#}
-{#      </div>#}
-{#      <div class="form-group">#}
-{#        <textarea class="form-control" name="commentary" rows="3" placeholder="说点什么吧 "></textarea>#}
-{#      </div>#}
-{#      <div class="form-group">#}
-{#        <button type="submit" class="btn btn-primary btn-lg btn-block">发表评论</button>#}
-{#      </div>#}
-{#    </form>#}
-{#    <br>#}
-{#    <br>#}
+            <button type="button" onclick=doSubmitForm()>提交</button>
 
-{#    <div class="list-group">#}
-{#      <div class="alert alert-info" role="alert">#}
-{#        <h4 class="list-group-item-heading">#}
-{#          评论列表#}
-{#        </h4>#}
-{#      </div>#}
-{##}
-{#      {% for comment in comments %}#}
-{#        <div href="#" class="list-group-item">#}
-{#          <p>#{{ loop.index }}楼 {{ comment.comment_date }} {{ comment.comment_name }} </p>#}
-{#          <p>#}
-{#            {{ comment.comment_text|safe }}#}
-{#          <p class="label"><a href="/comment_support/{{ comment.comment_id }}">支持({{ comment.comment_support }})</a>#}
-{#          </p>#}
-{#          <p class="label"><a href="/comment_oppose/{{ comment.comment_id }}">反对({{ comment.comment_oppose }})</a>#}
-{#          </p>#}
-{#          </p>#}
-{#        </div>#}
-{#      {% endfor %}#}
-{#    </div>#}
+            <input type="submit" value="提交"/>
+        </form>
+        {#    <form role="form" action="/add_comment/{{ competition.competition_id }}" method="post"><!--帖子评论框-->#}
+        {#      <div class="form-group">#}
+        {#        <hr>#}
+        {#      </div>#}
+        {#      <div class="form-group">#}
+        {#        <textarea class="form-control" name="commentary" rows="3" placeholder="说点什么吧 "></textarea>#}
+        {#      </div>#}
+        {#      <div class="form-group">#}
+        {#        <button type="submit" class="btn btn-primary btn-lg btn-block">发表评论</button>#}
+        {#      </div>#}
+        {#    </form>#}
+        {#    <br>#}
+        {#    <br>#}
 
-  </div>
-  <p>{{ tip }}</p>
+        {#    <div class="list-group">#}
+        {#      <div class="alert alert-info" role="alert">#}
+        {#        <h4 class="list-group-item-heading">#}
+        {#          评论列表#}
+        {#        </h4>#}
+        {#      </div>#}
+        {##}
+        {#      {% for comment in comments %}#}
+        {#        <div href="#" class="list-group-item">#}
+        {#          <p>#{{ loop.index }}楼 {{ comment.comment_date }} {{ comment.comment_name }} </p>#}
+        {#          <p>#}
+        {#            {{ comment.comment_text|safe }}#}
+        {#          <p class="label"><a href="/comment_support/{{ comment.comment_id }}">支持({{ comment.comment_support }})</a>#}
+        {#          </p>#}
+        {#          <p class="label"><a href="/comment_oppose/{{ comment.comment_id }}">反对({{ comment.comment_oppose }})</a>#}
+        {#          </p>#}
+        {#          </p>#}
+        {#        </div>#}
+        {#      {% endfor %}#}
+        {#    </div>#}
+
+    </div>
+    <p>{{ tip }}</p>
+    <script>
+        function doSubmitForm() {
+
+            var subUrl = "http://localhost:5000/competition/competition_uploader/"
+            var form = new FormData();
+            form.append('file', document.getElementById('file').files[0])
+
+            var competition_id =
+            {{competition.competition_id}}
+            var user_id = {{uid}}
+                form.append('competition_id', competition_id);
+            form.append('user_id', user_id);
+            var request = new XMLHttpRequest();
+            request.open("POST", subUrl);
+            request.send(form)
+
+        }
+
+    </script>
 
 
-
-  {{ super() }}
+    {{ super() }}
 
 {% endblock %}
