@@ -18,6 +18,7 @@ from ..message.views import new_message, sum_message
 
 from config import DATABASE, UPLOAD_FOLDER
 
+
 @competition.route('/', methods=['GET', 'POST'])
 def show_competitions():
     all_cnt = Competition.query.count()  # 获取所有帖子数量
@@ -37,19 +38,19 @@ def show_competitions():
                 current_app.art_n = 8
         except:
             current_app.art_n = 8
-    competitions = Competition.query.order_by(Competition.competition_id.desc()).limit(current_app.art_n)  # 从数据库取出相应数量的帖子
+    competitions = Competition.query.order_by(Competition.competition_id.desc()).limit(
+        current_app.art_n)  # 从数据库取出相应数量的帖子
     users = User.query.order_by(User.uid.desc()).all()  # 从数据库取出用户表（加载头像）
     if current_user.is_authenticated:
         sum_message(current_user.uid)
 
-    return render_template('all_competitions.html', tip='主页', competitions=competitions, users=users, news=news, flag=0)  # 向前台传递数据
-
+    return render_template('all_competitions.html', tip='主页', competitions=competitions, users=users, news=news,
+                           flag=0)  # 向前台传递数据
 
 
 @competition.route('/get_competition/<competition_id>', methods=['GET'])
 @login_required
 def get_competition(competition_id):
-
     if current_user.is_authenticated:
         sum_message(current_user.uid)
 
@@ -70,37 +71,48 @@ def upload_score():
     submission_file = request.files['file']
     suffix = secure_filename(submission_file.filename)[-4:]
     uuid_value = uuid.uuid1()
-    save_name = os.path.join(UPLOAD_FOLDER[1:],uuid_value.hex)
-    submission_file.save(save_name+suffix)
+    save_name = os.path.join(UPLOAD_FOLDER[1:], uuid_value.hex)
+    submission_file.save(save_name + suffix)
     checker = db.session.query(Competition.checker_url).filter_by(competition_id=output['competition_id']).first()
-    with open(save_name+'.py','w+') as file:
-        file.write(checker[0])
+    with open(save_name + '.py', 'w+') as file:
+        file.write(checker[0])  # 保存checker脚本
     gt_path = db.session.query(Competition.gt_url).filter_by(competition_id=output['competition_id']).first()[0]
-    score = os.popen('python {} -sub {} -gt {}'.format(save_name+'.py', save_name+suffix, gt_path))
-    score = score.read() # 抓取修改数据库里的checker_url代码的输出（错误检测可以加到这里）
-    os.remove(save_name+suffix)
-    os.remove(save_name+'.py')
-    rank = Rank(user_id=output['user_id'], competition_id=output['competition_id'], score=score)
-    db.session.add(rank)
+    new_score = os.popen('python {} -sub {} -gt {}'.format(save_name + '.py', save_name + suffix, gt_path))
+    new_score = new_score.read()  # 抓取修改数据库里的checker_url代码的输出（错误检测可以加到这里）
+    os.remove(save_name + suffix)
+    os.remove(save_name + '.py')
+    old_score = db.session.query(Rank.score).filter_by(competition_id=output['competition_id'],
+                                                       user_id=output['user_id']).first()
+    if old_score is None:
+        rank = Rank(user_id=output['user_id'], competition_id=output['competition_id'], score=new_score)
+        db.session.add(rank)
+    elif float(new_score) > old_score[0]:
+        print(float(new_score), old_score[0])
+        score_updated = Rank.query.filter_by(competition_id=output['competition_id'], user_id=output['user_id']).update(
+            dict(score=new_score))
+    else:
+        pass
+
     db.session.commit()
     # 目前没有写response，根据错误处理来搞
 
 
 def get_index(score):
-    ls = [1]*len(score)
-    for i in range(1,len(score)):
-        ls[i] = ls[i-1]+1 if score[i]!=score[i-1] else ls[i-1]
+    ls = [1] * len(score)
+    for i in range(1, len(score)):
+        ls[i] = ls[i - 1] + 1 if score[i] != score[i - 1] else ls[i - 1]
     return ls
 
 
 @competition.route('/get_competition/scoreboard/<competition_id>')
 def score_board(competition_id):
-    print("now:",competition_id)
+    print("now:", competition_id)
     tot = Rank.query.filter_by(competition_id=competition_id).all()
-    tot = list(sorted(tot,key=lambda x : x.score,reverse=True))
+    tot = list(sorted(tot, key=lambda x: x.score, reverse=True))
     competiton_name = Competition.query.filter_by(competition_id=competition_id).first().competition_title
     name_list = [User.query.filter_by(uid=i.user_id).first().account for i in tot]
     index_list = get_index(tot)
     print(name_list)
     print(index_list)
-    return render_template('score_board.html',score=tot,competition_name=competiton_name,name=name_list,num=len(tot),index_list=index_list)
+    return render_template('score_board.html', score=tot, competition_name=competiton_name, name=name_list,
+                           num=len(tot), index_list=index_list)
