@@ -212,6 +212,7 @@ class Competition(db.Model):
     competition_type = db.Column(db.String(20, 'utf8_general_ci'))
     user_id = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
     dataset_url = db.Column(db.String(255, 'utf8_general_ci'))
+    example_url = db.Column(db.String(255, 'utf8_general_ci'))
     checker_url = db.Column(db.String(255, 'utf8_general_ci'))
     gt_url = db.Column(db.String(255, 'utf8_general_ci'))
 

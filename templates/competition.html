@@ -29,10 +29,11 @@
 
       <figcaption class="figure-caption">{{ competition.competition_summary|safe }}</figcaption><!--帖子正文-->
     </figure>
-      <a href={{ competition.dataset_url }}>点击下载数据集</a>
+      <a href={{ competition.dataset_url }}>点击下载数据集</a>          <br>
+      <a href={{ competition.example_url }}>点击下载提交样例</a>
       <form action="http://localhost:5000/competition/competition_uploader/{{competition.competition_id}}" method="POST" enctype="multipart/form-data">
         <input id='file' type="file" name="file"  />
-          <input value=>
+
         <input type="submit" value="提交" />
     </form>
 {#    <form role="form" action="/add_comment/{{ competition.competition_id }}" method="post"><!--帖子评论框-->#}
