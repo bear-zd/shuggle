@@ -88,7 +88,10 @@ def upload_score(competition_id):
 
 @competition.route('/get_competition/scoreboard/<competition_id>')
 def score_board(competition_id):
-    print("now:",competition_id)
+    # print("now:",competition_id)
     tot = Rank.query.filter_by(competition_id=competition_id).all()
     tot = list(sorted(tot,key=lambda x : x.score,reverse=True))
-    return render_template('score_board.html',score=tot)
+    competiton_name = Competition.query.filter_by(competition_id=competition_id).first().competition_title
+    name_list = [User.query.filter_by(uid=i.user_id).first().account for i in tot]
+    print(name_list)
+    return render_template('score_board.html',score=tot,competition_name=competiton_name,name=name_list,num=len(tot))

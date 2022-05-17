@@ -2,23 +2,26 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/score_board.css') }}"/>
 </head>
 {#{% block content %}#}
-<h1><span class="blue">&lt;</span>Table<span class="blue">&gt;</span> <span class="yellow">Responsive</span></h1>
-<h2>Created with love by <a href="https://github.com/pablorgarcia" target="_blank">Pablo García</a></h2>
+<h1><span class="blue">&lt;</span>SHUGGLE<span class="blue">&gt;</span> <span class="yellow">{{ competition_name }}</span></h1>
+<h2>享受数据科学的乐趣😎 <a href="https://github.com/pablorgarcia" target="_blank">  来自SHU计算机工程与科学学院</a></h2>
 
 <table class="container">
 	<thead>
 		<tr>
+			<th><h1>排名</h1></th>
 			<th><h1>用户id</h1></th>
+            <th><h1>用户名</h1></th>
 			<th><h1>用户得分</h1></th>
-{#			<th><h1>Clicks</h1></th>#}
 {#			<th><h1>Average</h1></th>#}
 		</tr>
 	</thead>
 	<tbody>
-        {% for ele in score %}
+        {% for i in range(num) %}
             <tr>
-                <td>{{ele.user_id}}"</td>
-                <td>"{{ele.score}}"</td>
+                <td>{{i+1}}</td>
+                <td>{{score[i].user_id}}</td>
+                <td>{{name[i]}}</td>
+                <td>{{score[i].score}}</td>
 {#                <td>ele.score</td>#}
 {#                  <td>1</td>#}
 {#                  <td>1</td>#}
