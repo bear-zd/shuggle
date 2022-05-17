@@ -29,6 +29,11 @@
 
       <figcaption class="figure-caption">{{ competition.competition_summary|safe }}</figcaption><!--帖子正文-->
     </figure>
+      <a href={{ competition.dataset_url }}>点击下载数据集</a>
+      <form action="http://localhost:5000/competition/competition_uploader" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file"  />
+        <input type="submit" value="提交" />
+    </form>
 {#    <form role="form" action="/add_comment/{{ competition.competition_id }}" method="post"><!--帖子评论框-->#}
 {#      <div class="form-group">#}
 {#        <hr>#}
