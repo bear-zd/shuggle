@@ -7,7 +7,8 @@
                 _width: 500px;
             }
         </style>
-        <a href="http://localhost:5000/competition/get_competition/scoreboard/{{ competition.competition_id }}" title="scoreboard"><i class="Scoreboard"></i> Scoreboard</a>
+        <a href="http://localhost:5000/competition/get_competition/scoreboard/{{ competition.competition_id }}"
+           title="scoreboard"><i class="Scoreboard"></i> Scoreboard</a>
         <div class="img_main float-right"
              style="text-align: center;overflow: hidden;width: 180px;height: 180px;border:0px solid;border-radius:15px;">
             <img class="blog_img" src="{{ competition.competition_url }}" alt="Card image cap"
@@ -91,11 +92,20 @@
             var user_id = {{uid}}
                 form.append('competition_id', competition_id);
             form.append('user_id', user_id);
-            var request = new XMLHttpRequest();
-            request.open("POST", subUrl);
-            request.send(form)
-
-        }
+            var req = new XMLHttpRequest();
+            req.open("POST", subUrl);
+            req.send(form)
+        {#    req.onreadystatechange = function () {#}
+        {#        console.log(req.responseText)#}
+        {#        if (req.readyState == 4 && req.status == 200) {#}
+        {#            alert('提交成功！')}#}
+        {#        else#}
+        {#            {#}
+        {#                var resRes = req.responseText;#}
+        {#                alert('请查看提交格式是否正确！')#}
+        {#            }#}
+        {#        }#}
+        {#}#}
 
     </script>
 

@@ -7,7 +7,7 @@ import os, uuid
 from ..main import main, news
 
 import markdown
-from flask import g, redirect, render_template, request, url_for, Response, jsonify
+from flask import g, redirect, render_template, request, url_for, Response, jsonify, make_response
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 
@@ -77,24 +77,34 @@ def upload_score():
     with open(save_name + '.py', 'w+') as file:
         file.write(checker[0])  # 保存checker脚本
     gt_path = db.session.query(Competition.gt_url).filter_by(competition_id=output['competition_id']).first()[0]
-    new_score = os.popen('python {} -sub {} -gt {}'.format(save_name + '.py', save_name + suffix, gt_path))
-    new_score = new_score.read()  # 抓取修改数据库里的checker_url代码的输出（错误检测可以加到这里）
-    os.remove(save_name + suffix)
-    os.remove(save_name + '.py')
-    old_score = db.session.query(Rank.score).filter_by(competition_id=output['competition_id'],
-                                                       user_id=output['user_id']).first()
-    if old_score is None:
-        rank = Rank(user_id=output['user_id'], competition_id=output['competition_id'], score=new_score)
-        db.session.add(rank)
-    elif float(new_score) > old_score[0]:
-        print(float(new_score), old_score[0])
-        score_updated = Rank.query.filter_by(competition_id=output['competition_id'], user_id=output['user_id']).update(
-            dict(score=new_score))
-    else:
-        pass
+    try:
+        new_score = os.popen('python {} -sub {} -gt {}'.format(save_name + '.py', save_name + suffix, gt_path))
+        new_score = new_score.read()  # 抓取修改数据库里的checker_url代码的输出（错误检测可以加到这里）
+        os.remove(save_name + suffix)
+        os.remove(save_name + '.py')
+        old_score = db.session.query(Rank.score).filter_by(competition_id=output['competition_id'],
+                                                           user_id=output['user_id']).first()
+        if old_score is None:
+            rank = Rank(user_id=output['user_id'], competition_id=output['competition_id'], score=new_score)
+            db.session.add(rank)
+        elif float(new_score) > old_score[0]:
+            print(float(new_score), old_score[0])
+            score_updated = Rank.query.filter_by(competition_id=output['competition_id'], user_id=output['user_id']).update(
+                dict(score=new_score))
+        else:
+            pass
+        db.session.commit()
+        #resp = Response(response='successful', status=200, content_type='text/html;charset=utf-8')
+        resp = make_response()
+        resp.status = 200
+        return resp
+    except Exception:
+        resp = Response(response='failure', status=404, content_type='text/html;charset=utf-8')
+        return resp
 
-    db.session.commit()
-    # 目前没有写response，根据错误处理来搞
+
+
+# 目前没有写response，根据错误处理来搞
 
 
 def get_index(score):
