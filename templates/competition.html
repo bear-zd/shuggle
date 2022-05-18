@@ -4,7 +4,7 @@
         function doSubmitForm() {
             window.confirm('确认提交？');
 
-            var subUrl = "http://localhost:5000/competition_uploader/"
+            var subUrl = "http://localhost:5000/competition/competition_uploader/"
             var form = new FormData();
             form.append('file', document.getElementById('file').files[0])
 
@@ -36,7 +36,7 @@
                 _width: 500px;
             }
         </style>
-        <a href="http://localhost:5000/get_competition/scoreboard/{{ competition.competition_id }}"
+        <a href="http://localhost:5000/competition/get_competition/scoreboard/{{ competition.competition_id }}"
            title="scoreboard" target="_blank"><i class="Scoreboard"></i> Scoreboard</a>
         <div class="img_main float-right"
              style="text-align: center;overflow: hidden;width: 180px;height: 180px;border:0px solid;border-radius:15px;">
@@ -65,7 +65,7 @@
         </figure>
         <a href={{ competition.dataset_url }}>点击下载数据集</a> <br>
         <a href={{ competition.example_url }}>点击下载提交样例</a>
-        <form action="http://localhost:5000/competition_uploader/" method="POST" enctype="multipart/form-data" >
+        <form action="http://localhost:5000/competition/competition_uploader/" method="POST" enctype="multipart/form-data" >
             <input id='file' type="file" name="file"/>
 
             <button type="button" onclick=doSubmitForm()>提交</button>

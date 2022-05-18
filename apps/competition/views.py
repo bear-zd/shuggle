@@ -15,11 +15,11 @@ from . import competition
 from ..models import db, Competition, Comment, User, Rank
 from ..tools.other_tool import getnowtime, re_filename, HtmlToText, Base64_PNG, get_new, getTopNews
 from ..message.views import new_message, sum_message
-from .forms import CompetitionForm
+
 from config import DATABASE, UPLOAD_FOLDER
 
 
-@competition.route('/competition/', methods=['GET', 'POST'])
+@competition.route('/', methods=['GET', 'POST'])
 def show_competitions():
     all_cnt = Competition.query.count()  # 获取所有帖子数量
     if request.method == 'POST':
@@ -47,57 +47,6 @@ def show_competitions():
     return render_template('all_competitions.html', tip='主页', competitions=competitions, users=users, news=news,
                            flag=0)  # 向前台传递数据
 
-@competition.route('/add_competition/', methods=['GET', 'POST'])
-@login_required
-def add_article():
-    sum_message(current_user.uid)
-    competitionForm = CompetitionForm()  # 构建帖子类型的表单样式
-    if competitionForm.validate_on_submit():  # 获取前台提交的表单内容
-        competition_url = competitionForm.competition_url.data
-        competition_title = competitionForm.competition_title.data
-        competition_summary = competitionForm.competition_summary.data
-        competition_id = max(db.session.query(Competition.competition_id).all())[0] + 1
-        dataset = competitionForm.dateset
-        checker = competitionForm.checker
-        gt = competitionForm.GroundTruth
-        example = competitionForm.example
-        save_path = os.path.abspath(os.path.join(os.getcwd(),"competition"))
-        if not os.path.exists(os.path.join(save_path,'dataset', str(competition_id))):
-            os.mkdir(os.path.join(save_path,'dataset', str(competition_id)))
-        dataset.data.save(os.path.join(
-            save_path, 'dataset', str(competition_id),dataset.data.filename
-        ))
-        if not os.path.exists(os.path.join(save_path,'checker', str(competition_id))):
-            os.mkdir(os.path.join(save_path,'checker', str(competition_id)))
-        checker.data.save(os.path.join(
-            save_path, 'checker', str(competition_id),checker.data.filename
-        ))
-        if not os.path.exists(os.path.join(save_path,'ground_truth', str(competition_id))):
-            os.mkdir(os.path.join(save_path,'ground_truth', str(competition_id)))
-        gt.data.save(os.path.join(
-            save_path, 'ground_truth', str(competition_id),gt.data.filename
-        ))
-        if not os.path.exists(os.path.join(save_path,'example', str(competition_id))):
-            os.mkdir(os.path.join(save_path,'example', str(competition_id)))
-        example.data.save(os.path.join(
-            save_path, 'example', str(competition_id),example.data.filename
-        ))
-        competition = Competition(competition_id=competition_id,competition_title=competition_title,competition_summary=competition_summary,
-                                  competition_date=getnowtime('-'),user_id=current_user.uid,dataset_url='competition/dataset/'+str(competition_id)+'/'+dataset.data.filename,
-                                  checker_url='competition/checker/'+str(competition_id)+'/'+checker.data.filename,
-                                  gt_url='competition/ground_truth/'+str(competition_id)+'/'+gt.data.filename,
-                                  example_url='competition/example/'+str(competition_id)+'/'+example.data.filename,
-                                  competition_read_cnt=0,competition_pl=0,competition_sc=0
-                                  )
-        db.session.add(competition)  # 将构造的对象存入数据库
-        db.session.commit()
-        thisarticles = Competition.query.filter_by(competition_id=competition.competition_id).first()
-        competition_url = Base64_PNG(competition_url, competition.competition_id, type='article')
-        thisarticles.competition_url = competition_url
-        db.session.commit()
-        return redirect(url_for('main.index'))  # 返回首页
-    else:
-        return render_template('baseform.html', form=competitionForm, flag='competition')  # 向前台传递构造的表单样式
 
 @competition.route('/get_competition/<competition_id>', methods=['GET'])
 @login_required
