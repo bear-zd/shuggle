@@ -1,5 +1,34 @@
 {% extends "base.html" %}
 {% block content %}
+    <script>
+        function doSubmitForm() {
+            window.confirm('确认提交？');
+
+            var subUrl = "http://localhost:5000/competition/competition_uploader/"
+            var form = new FormData();
+            form.append('file', document.getElementById('file').files[0])
+
+            var competition_id =
+            {{competition.competition_id}}
+            var user_id = {{uid}}
+                form.append('competition_id', competition_id);
+            form.append('user_id', user_id);
+            var req = new XMLHttpRequest();
+            req.open("POST", subUrl);
+            req.send(form)
+            {#    req.onreadystatechange = function () {#}
+            {#        console.log(req.responseText)#}
+            {#        if (req.readyState == 4 && req.status == 200) {#}
+            {#            alert('提交成功！')}#}
+            {#        else#}
+            {#            {#}
+            {#                var resRes = req.responseText;#}
+            {#                alert('请查看提交格式是否正确！')#}
+            {#            }#}
+            {#        }#}
+        }
+    </script>
+
     <div class="container" style="padding-top: 90px;">
         <style>
             .figure img {
@@ -79,35 +108,6 @@
 
     </div>
     <p>{{ tip }}</p>
-    <script>
-        function doSubmitForm() {
-            confirm('确认提交？');
-
-            var subUrl = "http://localhost:5000/competition/competition_uploader/"
-            var form = new FormData();
-            form.append('file', document.getElementById('file').files[0])
-
-            var competition_id =
-            {{competition.competition_id}}
-            var user_id = {{uid}}
-                form.append('competition_id', competition_id);
-            form.append('user_id', user_id);
-            var req = new XMLHttpRequest();
-            req.open("POST", subUrl);
-            req.send(form)
-        {#    req.onreadystatechange = function () {#}
-        {#        console.log(req.responseText)#}
-        {#        if (req.readyState == 4 && req.status == 200) {#}
-        {#            alert('提交成功！')}#}
-        {#        else#}
-        {#            {#}
-        {#                var resRes = req.responseText;#}
-        {#                alert('请查看提交格式是否正确！')#}
-        {#            }#}
-        {#        }#}
-        {#}#}
-
-    </script>
 
 
     {{ super() }}
