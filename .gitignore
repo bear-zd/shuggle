@@ -1,2 +1,3 @@
 config.py
-.idea/
+.idea
+.DS_Store
