@@ -35,8 +35,7 @@
         </figure>
         <a href={{ competition.dataset_url }}>点击下载数据集</a> <br>
         <a href={{ competition.example_url }}>点击下载提交样例</a>
-        <form action="http://localhost:5000/competition/competition_uploader/"
-              method="POST" enctype="multipart/form-data">
+        <form action="http://localhost:5000/competition/competition_uploader/" method="POST" enctype="multipart/form-data" >
             <input id='file' type="file" name="file"/>
 
             <button type="button" onclick=doSubmitForm()>提交</button>
@@ -81,6 +80,7 @@
     <p>{{ tip }}</p>
     <script>
         function doSubmitForm() {
+            confirm('确认提交？');
 
             var subUrl = "http://localhost:5000/competition/competition_uploader/"
             var form = new FormData();
