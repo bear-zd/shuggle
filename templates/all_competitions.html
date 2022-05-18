@@ -26,10 +26,10 @@
                         <!--楼主头像-->
                       {% endif %}
                     {% endfor %}
-                    <a href="/competition/get_competition/{{ competition.competition_id }}"
+                    <a href="/get_competition/{{ competition.competition_id }}"
                        style="text-decoration:none;text-align:left;">{{ competition.competition_title }}</a></h5><!--帖子标题-->
                     <div class="clearfix"></div>
-                    <div style="height: 45px;margin-bottom: 5px;"><a href="/competition/get_competition/{{ competition.competition_id }}"
+                    <div style="height: 45px;margin-bottom: 5px;"><a href="/get_competition/{{ competition.competition_id }}"
                                                                      style="text-decoration:none;"><p
                             class="card-text">{{ competition.text_summ(40)|safe }}...</p></a></div><!--帖子正文缩略-->
                     <div class="btn-group float-left" role="group"
