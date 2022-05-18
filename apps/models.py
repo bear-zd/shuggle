@@ -137,7 +137,6 @@ class Article(db.Model):
     article_sc = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
     article_date = db.Column(db.String(255, 'utf8_general_ci'))
     article_url = db.Column(db.String(255, 'utf8_general_ci'))
-    article_type = db.Column(db.String(20, 'utf8_general_ci'))
     user_id = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
 
     def text_summ(self, num=0):
@@ -209,7 +208,6 @@ class Competition(db.Model):
     competition_sc = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
     competition_date = db.Column(db.String(255, 'utf8_general_ci'))
     competition_url = db.Column(db.String(255, 'utf8_general_ci'))
-    competition_type = db.Column(db.String(20, 'utf8_general_ci'))
     user_id = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
     dataset_url = db.Column(db.String(255, 'utf8_general_ci'))
     example_url = db.Column(db.String(255, 'utf8_general_ci'))

@@ -22,12 +22,11 @@ def add_article():
     if articleForm.validate_on_submit():  # 获取前台提交的表单内容
         article_url = articleForm.article_url.data
         article_title = articleForm.article_title.data
-        article_type = articleForm.article_type.data
+        # article_type = articleForm.article_type.data
         article_summary = articleForm.article_summary.data
         article_id = max(db.session.query(Article.article_id).all())[0] + 1
         article = Article(article_id=article_id, article_title=article_title, article_summary=article_summary,
-                          article_date=getnowtime('-'), article_type=article_type,
-                          user_id=current_user.uid)  # 根据表单内容构造对象
+                          article_date=getnowtime('-'), user_id=current_user.uid)  # 根据表单内容构造对象
         db.session.add(article)  # 将构造的对象存入数据库
         db.session.commit()
         thisarticles = Article.query.filter_by(article_id=article.article_id).first()

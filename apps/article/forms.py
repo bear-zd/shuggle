@@ -26,8 +26,8 @@ class ArticleForm(RenderForm):
                                 render_kw={"placeholder": "3-15个字符"})
     article_summary = TextAreaField(label='正文', validators=[Length(min=15, max=3000, message="必须介于15-3000个字符")],
                                     render_kw={"placeholder": "15-3000个字符", "id": "editor"})
-    article_type = SelectField('板块', choices=[('讨论', '讨论'), ('竞赛', 'competition')],
-                               validators=[DataRequired("板块必选！")])
+    # article_type = SelectField('板块', choices=[('讨论', '讨论'), ('竞赛', 'competition')],
+    #                            validators=[DataRequired("板块必选！")])
     submit = SubmitField('发布', render_kw={"class": "btn btn-success"})
 
 
