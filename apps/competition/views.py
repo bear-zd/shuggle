@@ -119,6 +119,7 @@ def get_competition(competition_id):
 @competition.route('/competition_uploader/', methods=['POST'])
 def upload_score():
     output = request.form
+    print(request.form, request.files)
     submission_file = request.files['file']
     suffix = secure_filename(submission_file.filename)[-4:]
     uuid_value = uuid.uuid1()
@@ -142,16 +143,12 @@ def upload_score():
             print(float(new_score), old_score[0])
             score_updated = Rank.query.filter_by(competition_id=output['competition_id'], user_id=output['user_id']).update(
                 dict(score=new_score))
-        else:
-            pass
         db.session.commit()
-        #resp = Response(response='successful', status=200, content_type='text/html;charset=utf-8')
-        resp = make_response()
-        resp.status = 200
-        return resp
+        print('??')
+        return make_response('successful', 302)
     except Exception:
-        resp = Response(response='failure', status=404, content_type='text/html;charset=utf-8')
-        return resp
+         resp = make_response('failed', 404)
+         return resp
 
 
 

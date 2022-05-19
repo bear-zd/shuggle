@@ -3,6 +3,7 @@ from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 from flask_ckeditor import CKEditor
+from flask_cors import CORS
 from flask_wtf.csrf import CSRFProtect
 import os
 
@@ -45,7 +46,7 @@ def create_app():
 
 # application = app = create_app(threaded = True)
 app = create_app()
-
+CORS(app, resources=r'/*')
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True, port=5000, threaded=True)
