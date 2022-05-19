@@ -16,15 +16,16 @@
             var req = new XMLHttpRequest();
             req.open("POST", subUrl);
             req.send(form)
-            req.onreadystatechange = function () {
-                if (req.readyState == 4 && req.status === 302) {
-                    alert('提交成功！');
-                    window.location.href = "http://localhost:5000/get_competition/scoreboard/{{ competition.competition_id }}"
-                } else if (req.readyState == 4 && req.status === 404){
-                    var resRes = req.responseText;
-                    alert('请查看提交格式是否正确！')
-                }
-            }
+            {#    req.onreadystatechange = function () {#}
+            {#        console.log(req.responseText)#}
+            {#        if (req.readyState == 4 && req.status == 200) {#}
+            {#            alert('提交成功！')}#}
+            {#        else#}
+            {#            {#}
+            {#                var resRes = req.responseText;#}
+            {#                alert('请查看提交格式是否正确！')#}
+            {#            }#}
+            {#        }#}
         }
     </script>
 
@@ -64,7 +65,7 @@
         </figure>
         <a href={{ competition.dataset_url }}>点击下载数据集</a> <br>
         <a href={{ competition.example_url }}>点击下载提交样例</a>
-        <form action="http://localhost:5000/competition_uploader/" method="POST" enctype="multipart/form-data">
+        <form action="http://localhost:5000/competition_uploader/" method="POST" enctype="multipart/form-data" >
             <input id='file' type="file" name="file"/>
 
             <button type="button" onclick=doSubmitForm()>提交</button>
