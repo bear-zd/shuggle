@@ -118,7 +118,7 @@ class UserLogin(db.Model):
 
 
 class Verify(db.Model):
-    __tablename__ = 'verify'
+    __tablename__ = 'registerverify'
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255))

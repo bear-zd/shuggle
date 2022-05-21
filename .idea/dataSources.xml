@@ -14,5 +14,12 @@
       <jdbc-url>jdbc:postgresql://zidea.site:5432/shuggle</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="paneldl@zidea.site" uuid="bed64d4e-b616-4314-8b7e-f0fd960691c4">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://zidea.site:3306/paneldl</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
