@@ -24,7 +24,10 @@ def add_article():
         article_title = articleForm.article_title.data
         # article_type = articleForm.article_type.data
         article_summary = articleForm.article_summary.data
-        article_id = max(db.session.query(Article.article_id).all())[0] + 1
+        try:
+            article_id = max(db.session.query(Article.article_id).all())[0] + 1
+        except ValueError:
+            article_id = 0
         article = Article(article_id=article_id, article_title=article_title, article_summary=article_summary,
                           article_date=getnowtime('-'), user_id=current_user.uid)  # 根据表单内容构造对象
         db.session.add(article)  # 将构造的对象存入数据库
@@ -185,7 +188,7 @@ def img():
         os.makedirs(finalpath)
 
     file = request.files['upload']
-
+    print('upload!!')
     suffix = file.filename.rsplit('.', 1)[1]
     if suffix not in ('jpeg', 'jpg', 'png', 'gif'):
         response = {
@@ -204,13 +207,13 @@ def img():
         'uploaded': True,
         'url': '/static/upload/' + username + '/' + name
     }
+    print('OK!!')
     return jsonify(response)
 
 
 @article.route('/imgs/<img_name>')
 @login_required
 def load(img_name):
-    print('wwww')
     image = os.path.join(os.getcwd(), 'static', img_name)
     if not os.path.exists(image):
         return redirect('page_not_found')
@@ -231,7 +234,6 @@ def load(img_name):
 
 @article.route('/ckupload/', methods=['GET', 'POST'])
 def ckupload():
-    print('qqqq')
     if request.method == 'POST':
         f = request.files['file']
     basepath = os.path.dirname(__file__)  # 当前文件所在路径

@@ -23,8 +23,8 @@ class CompetitionForm(RenderForm):
     competition_url = StringField(label='',
                               render_kw={"placeholder": "0-20个字符", "id": "tx_input_2", "class": "invisible", "type": "text",
                                          "readonly": "readonly"})
-    competition_title = StringField(label='标题', validators=[Length(min=3, max=15, message="必须介于3-15个字符")],
-                                render_kw={"placeholder": "3-15个字符"})
+    competition_title = StringField(label='标题', validators=[Length(min=5, max=255, message="必须介于3-15个字符")],
+                                render_kw={"placeholder": "5-255个字符"})
     competition_summary = TextAreaField(label='正文', validators=[Length(min=15, max=3000, message="必须介于15-3000个字符")],
                                     render_kw={"placeholder": "15-3000个字符", "id": "editor"})
     dateset = FileField(validators=[FileRequired(),

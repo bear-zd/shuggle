@@ -130,7 +130,7 @@ def upload_score():
         file.write(checker[0])  # 保存checker脚本
     gt_path = db.session.query(Competition.gt_url).filter_by(competition_id=output['competition_id']).first()[0]
     try:
-        new_score = os.popen('python {} -sub {} -gt {}'.format(save_name + '.py', save_name + suffix, gt_path))
+        new_score = os.popen('python3 {} -sub {} -gt {}'.format(save_name + '.py', save_name + suffix, gt_path))
         new_score = new_score.read()  # 抓取修改数据库里的checker_url代码的输出（错误检测可以加到这里）
         os.remove(save_name + suffix)
         os.remove(save_name + '.py')
@@ -144,7 +144,6 @@ def upload_score():
             score_updated = Rank.query.filter_by(competition_id=output['competition_id'], user_id=output['user_id']).update(
                 dict(score=new_score))
         db.session.commit()
-        print('??')
         return make_response('successful', 302)
     except Exception:
          resp = make_response('failed', 404)

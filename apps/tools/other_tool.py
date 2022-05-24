@@ -121,6 +121,7 @@ def Base64_PNG(str_base64='',id='none',type=''):
         file.write(imagedata)
         file.close()
         filedir = filedir[1:]
+        print(filedir)
         return filedir
 
 
