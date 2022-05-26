@@ -1,4 +1,8 @@
-# shuggle的开发
+# shuggle
+
+本项目目前已部署至http://zidea.site:5000
+
+![图片](pic/7888E03E9E15C37AE3A4C7AB04BEA056.jpg)
 
 ​	shuggle是面向全体上海大学学生的数据科学讨论与竞赛平台，分为**shuggle数据科学论坛**、**PanelDL深度学习训练可视化工具**、**SHU数据科学竞赛平台**三大板块，希望为有数据科学/深度学习兴趣的shu学生提供交流/竞赛平台。
 
@@ -8,7 +12,6 @@
 
 ​	对于计算机科学专业的学生而言，竞赛可能是提高水平的最快方法之一，并且可以让同学们交流不同的做法。目前我校ACM方向的竞赛OJ网站正在紧急开发过程中，可是对于一些研究深度学习的同学却缺少一个讨论交流、相互学习的平台。为此我们开发shuggle数据科学平台，希望日后能真正让同学老师参与进来。目前本项目已部署至公网，但仅有SHU校园邮箱才可注册。
 
-![img](https://zideapicbed.oss-cn-shanghai.aliyuncs.com/img/J_FH]UTNPCYSCYMQVO%T@PJ.jpg)
 
 
 
