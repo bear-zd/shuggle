@@ -18,7 +18,10 @@ def before_request():
 def index_re():
     current_app.art_n = 0
     return redirect(url_for('main.index'))
-
+@main.route('/favicon.ico')
+def get_fav():
+    print(__name__)
+    return current_app.send_static_file('img/favicon.ico')
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
@@ -101,6 +104,8 @@ def email_up():
         ubyemail = UserLogin.query.filter_by(email=email).first()
         if ubyemail:
             tip = " 邮箱已存在"
+        elif not 'shu' in email:
+            tip = " 请使用上海大学邮箱！"
         else:
             emails = email
             yzm = get_rand(6)
